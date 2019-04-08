@@ -80,8 +80,8 @@ class UserController {
       const cloudinaryResponse = await Cloudinary.v2.uploader.upload(file.tmpPath, {folder: 'adoteumpet'});
       return cloudinaryResponse.secure_url;
 
-    } catch (err) {
-      console.log(err)
+    } catch (error) {
+      console.log(error)
     }
   }
 
