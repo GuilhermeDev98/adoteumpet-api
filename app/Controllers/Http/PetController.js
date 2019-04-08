@@ -91,7 +91,6 @@ class PetController {
       photos._files.map( async file => {
         let cloudinaryResponse = await Cloudinary.uploader.upload(file.tmpPath, {folder: 'adoteumpet'})
         let secureUrl = await cloudinaryResponse.secure_url
-        console.log(secureUrl)
         await PetPhoto.create({ url: secureUrl, pet_id: petId })
       })
 
