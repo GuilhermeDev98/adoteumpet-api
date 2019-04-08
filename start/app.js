@@ -10,6 +10,9 @@
 | provider here.
 |
 */
+
+const port = process.env.PORT || 8080;
+
 const providers = [
   '@adonisjs/framework/providers/AppProvider',
   '@adonisjs/auth/providers/AuthProvider',
