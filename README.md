@@ -42,9 +42,10 @@ _Criar um site onde será possível expor um animal para que seja adotado_
 - email - string - requerido
 - password - string - requerido
 - photoURL - string -requerido
-- cep - number - requerido
 - cel - number - requerido
 - status - enum(admin, user) - default(user)
+- city - string - requerido
+- state - string - requerido
 
 #### Pet
 - name - string - requerido
@@ -54,7 +55,6 @@ _Criar um site onde será possível expor um animal para que seja adotado_
 - user_uid - integer - requerido
 - state - string - requerido
 - city - string - requerido
-- cep - number - optional
 - photos - json - requerido
 - isAdoted - boolean - default(0)
 - createdAt - date - required

@@ -58,7 +58,7 @@ class PetController {
     }
   }
 
-  async delete ({ params, auth, response }){
+  async destroy ({ params, auth, response }){
 
     const pet = await Pet.findOrFail(params.id)
 
@@ -82,31 +82,27 @@ class PetController {
   }
 
   async uploadPhotos(request, petId){
-    try {
+    const photos = request.files('photos', {
+      types: ['image'],
+      size: '1mb'
+    })
 
-      const photos = request.file('photos', {
-        types: ['image']
-      })
+    photos._files.map( async file => {
+      let cloudinaryResponse = await Cloudinary.uploader.upload(file.tmpPath, {folder: 'adoteumpet'})
+      let secureUrl = await cloudinaryResponse.secure_url
+      await PetPhoto.create({ url: secureUrl, pet_id: petId })
+    })
 
-      photos._files.map( async file => {
-        let cloudinaryResponse = await Cloudinary.uploader.upload(file.tmpPath, {folder: 'adoteumpet'})
-        let secureUrl = await cloudinaryResponse.secure_url
-        await PetPhoto.create({ url: secureUrl, pet_id: petId })
-      })
-
-    } catch (err) {
-      console.log(err)
-    }
   }
 
   async store({ request, auth }){
-    const data = request.all()
+    const data = request.except(['photos'])
 
-      const pet = await Pet.create({ user_id: auth.user.id, ...data })
+    const pet = await Pet.create({ user_id: auth.user.id, ...data })
 
-      this.uploadPhotos(request, pet.id)
+    this.uploadPhotos(request, pet.id)
 
-      return await Pet.query().where('id', pet.id).with('photos').fetch()
+    return await Pet.query().where('id', pet.id).with('photos').fetch()
   }
 
 }

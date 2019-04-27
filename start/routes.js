@@ -20,12 +20,9 @@ addPrefixToGroup(
 addPrefixToGroup(
 
   Route.group(() => {
-    Route.get('/', 'UserController.index')
-    Route.get('/:id', 'UserController.show')
-    Route.put('/:id', 'UserController.update')
-    Route.delete('/:id', 'UserController.delete')
-    Route.post('uploadPhoto', 'UserController.uploadPhoto')
-  }).middleware(['auth']).prefix('users')
+    Route.resource('users', 'UserController').apiOnly()
+
+  }).middleware(['auth'])
 
 )
 
@@ -33,6 +30,7 @@ addPrefixToGroup(
 
   Route.group(() => {
     Route.resource('pets', 'PetController').apiOnly()
+    Route.post('upload', 'PetController.uploadPhotos')
   }).middleware(['auth'])
 
 )

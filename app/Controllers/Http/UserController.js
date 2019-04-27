@@ -1,8 +1,6 @@
 'use strict'
 
 const User = use('App/Models/User')
-const Helpers = use('Helpers')
-const Env = use('Env')
 const Cloudinary = use('App/Services/Cloudinary.js');
 
 class UserController {
@@ -54,7 +52,7 @@ class UserController {
     
   }
 
-  async delete({ params, response, auth }){
+  async destroy({ params, response, auth }){
     if(auth.user.id == params.id || auth.user.status == 'admin' || auth.user.status == 'support'){
 
       try{
@@ -77,7 +75,7 @@ class UserController {
     try {
 
       const file = request.file('profile_pic');
-      const cloudinaryResponse = await Cloudinary.v2.uploader.upload(file.tmpPath, {folder: 'adoteumpet'});
+      const cloudinaryResponse = await Cloudinary.uploader.upload(file.tmpPath, {folder: 'adoteumpet'});
       return cloudinaryResponse.secure_url;
 
     } catch (error) {

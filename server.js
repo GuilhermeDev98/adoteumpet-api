@@ -17,8 +17,6 @@
 |     Make sure to pass a relative path from the project root.
 */
 
-console.log(process.env)
-
 const { Ignitor } = require('@adonisjs/ignitor')
 
 new Ignitor(require('@adonisjs/fold'))

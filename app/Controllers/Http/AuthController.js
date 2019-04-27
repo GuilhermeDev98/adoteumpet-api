@@ -3,16 +3,15 @@
 const User = use('App/Models/User')
 
 class AuthController {
+
   async login ({ auth, request, response }) {
-    const { email, password } = request.only(['email', 'password'])
-    try{
-      const token = await auth.attempt(email, password)
-      return response.send(token)
-    }catch(err){
-      response.status(400).json({
-        status: 'error',
-        message: 'Invalid email/password'
-      })
+    try {
+      const { email, password } = request.only(['email', 'password'])
+      const token = await auth.withRefreshToken().attempt(email, password)
+      const user = await User.firstOrFail('email', email)
+      return response.send({ token, user })
+    } catch (err) {
+      return response.send(err)
     }
   }
 
@@ -30,7 +29,7 @@ class AuthController {
       await user.save()
 
       const token = await auth.attempt(request.input('email'), request.input('password'))
-      return response.send(token)
+      return response.send({ token, user })
 
     }catch(err){
       response.status(400).json({
